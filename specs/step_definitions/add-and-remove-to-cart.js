@@ -37,5 +37,24 @@ Then('{string} {string} should be added to the cart', (quantity, productName) =>
     // and also contains the correct quantity
     .contains(quantity + 'st')
     // we should 1 element
-    .should('have.length', 1);
+    .should('have.length', 0);
+});
+
+When('I click the removeOne button {string} time', (clickCount) => {
+  for (let i = 1; i <= +clickCount; i++) {
+    cy.log("searchedFor", searchedFor);
+    cy.get('#cart li').contains(searchedFor)
+      .parents('li')
+      .find('.removeOne')
+      .click();
+  }
+});
+
+Then('{string} {string} should be left in the cart', (quantity, productName) => {
+  cy.log(productName, quantity)
+  cy.get('#cart li')
+    .contains(productName)
+    .parents('li')
+    .contains(quantity + 'st')
+    .should('exist')
 });

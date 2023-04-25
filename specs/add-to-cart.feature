@@ -6,7 +6,7 @@ Feature: Add to cart
     Given that I am on the start page
 
   Scenario Outline: Adding "<quantity>" "<product>" to the cart
-    Given that I have searched for "<product>"
+    Given that I have searched for the "<product>"
     When I click the buy button "<quantity>" time
     Then "<quantity>" "<product>" should be added to the cart
 
