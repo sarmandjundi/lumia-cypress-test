@@ -1,10 +1,9 @@
 {
-  "name": "lumiashop-testing",
+  "name": "cypress-template",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server",
     "test-ui": "cypress open --browser chrome",
     "test": "cypress run --browser chrome",
     "make-steps": "node _auto-generate-step-definitions.js"

@@ -19,4 +19,3 @@ Then('I should see the product {string}', (productName) => {
     .parents('div.product')
     .should('be.visible');
 });
-

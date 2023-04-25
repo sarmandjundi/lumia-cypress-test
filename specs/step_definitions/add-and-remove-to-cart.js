@@ -11,8 +11,11 @@ import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 // if you want to reuse them in another step
 let searchedFor;
 
-Given('that I have searched for {string}', (searchTerm) => {
+
+
+Given('that I have searched for the {string}', (searchTerm) => {
   searchedFor = searchTerm;
+
   cy.get('#search').type(searchTerm);
 });
 
@@ -32,6 +35,7 @@ When('I click the buy button {string} time', (clickCount) => {
 
 Then('{string} {string} should be added to the cart', (quantity, productName) => {
   // find a li (list item) in the cart that contains the product name
+  //cy.log("hej alla ni glada", productName, quantity);
   cy.get('#cart li')
     .contains(productName)
     // and also contains the correct quantity
@@ -40,21 +44,29 @@ Then('{string} {string} should be added to the cart', (quantity, productName) =>
     .should('have.length', 0);
 });
 
+
 When('I click the removeOne button {string} time', (clickCount) => {
   for (let i = 1; i <= +clickCount; i++) {
     cy.log("searchedFor", searchedFor);
+    // find product in cart
     cy.get('#cart li').contains(searchedFor)
+      // get the li tag for the row in the cart
       .parents('li')
+      // find the removeOne button
       .find('.removeOne')
+      // and click that button
       .click();
   }
 });
 
 Then('{string} {string} should be left in the cart', (quantity, productName) => {
   cy.log(productName, quantity)
+  // find a li (list item) in the cart that contains the product name
   cy.get('#cart li')
     .contains(productName)
     .parents('li')
+    // and also contains the correct quantity
     .contains(quantity + 'st')
+    // check that it exists
     .should('exist')
 });
