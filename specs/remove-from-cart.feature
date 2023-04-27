@@ -2,6 +2,10 @@ Feature: Remove from cart
   As a user T want to be able to remove products
   from the cart, so that I can buy the remaining.
 
+  Background:
+    Given that I am on the start page
+
+
   Scenario: Remove "1" "Golvlampa" from the cart
     Given that I am on the start page
     And that I have searched for the "Golvlampa"

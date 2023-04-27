@@ -5,6 +5,7 @@ Feature: Add to cart
   Background:
     Given that I am on the start page
 
+
   Scenario Outline: Adding "<quantity>" "<product>" to the cart
     Given that I have searched for the "<product>"
     When I click the buy button "<quantity>" time
