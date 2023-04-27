@@ -1,12 +1,13 @@
 {
   "name": "cypress-template",
   "version": "1.0.0",
-  "description": "",
+  "description": "Demo of Github actions with cypress + cucumber",
   "main": "index.js",
   "scripts": {
     "test-ui": "cypress open --browser chrome",
     "test": "cypress run --browser chrome",
-    "make-steps": "node _auto-generate-step-definitions.js"
+    "make-steps": "node _auto-generate-step-definitions.js",
+    "start": "node server.js"
   },
   "cypress-cucumber-preprocessor": {
     "json": {
@@ -26,5 +27,13 @@
   },
   "dependencies": {
     "express": "^4.18.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarmandjundi/lumia-cypress-test.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sarmandjundi/lumia-cypress-test/issues"
+  },
+  "homepage": "https://github.com/sarmandjundi/lumia-cypress-test#readme"
 }

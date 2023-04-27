@@ -1,21 +1,20 @@
-name: Node.js CI
+name: test and deploy
 
-# Trigger which git action (push, pull_request)
-# in which branch(es) should start the jobs...
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
 
-# jobs to run
 jobs:
-  # build, the name of the job, a server to create and auto configure
-  build:
+
+  # job 1: tests
+  tests:
 
     runs-on: ubuntu-latest
 
     strategy:
-      # only testing on Node 18 now but could have done
-      # several builds by adding [16.x, 18.x] etc
+      # testing on Node 16t and 18
       matrix:
         node-version: [16.x, 18.x]
 
@@ -37,8 +36,49 @@ jobs:
       # if the project has a npm run build command
       # then runs (not needed right now but keep)
     - run: npm run build --if-present
-      # start the application (lumiashop)
+      # start the server
     - run: nohup npm start &
       # run whatever is specified in package.json
       # for the script test
     - run: npm test
+
+
+  deploy:
+
+    # demand that the  test job succeed
+    # before running deploy
+    needs: [tests]
+
+    # only run this job if the environment protection rules
+    # (a reviewers approves and we are on the dev branch)
+    # are fulfilled
+    # TO BE CHECKD BY THOMAS:
+    # FOR NOW DEPLOY AUTOMATICALLY
+    # environment: "Main deploy"
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using password
+      # using ssh-action from appleboy
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        # using repository secrets
+        # for login to your server
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        # commands to run on your server
+        # below just an example
+        # can be more (like restarting pm2)
+        script: |
+          echo "cd to correct folder"
+          cd /var/www/lumia-cypress-test
+          echo "git pull"
+          git pull
+          echo "npm install"
+          npm install
+          echo "running build if present"
+          npm run build --if-present
+          echo "restarting app in pm2"
+          pm2 restart lumia
